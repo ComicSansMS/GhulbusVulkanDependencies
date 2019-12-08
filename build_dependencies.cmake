@@ -14,6 +14,12 @@ if(TOOLCHAIN)
     list(APPEND GENERATOR_OPTION -T ${TOOLCHAIN})
 endif()
 
+if(NOT SKIP_GIT)
+    find_package(Git REQUIRED)
+    message("Updating submodules...")
+    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init)
+endif()
+
 function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
     message("Building ${PROJECT_NAME}...")
     
