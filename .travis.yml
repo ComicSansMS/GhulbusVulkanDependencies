@@ -7,13 +7,13 @@ matrix:
       dist: bionic
       group: travis_latest
       env: MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
-      addons: { apt: { packages: ["ninja-build", "clang-8", "libc++-8-dev", "libc++abi-8-dev"], sources: ["llvm-toolchain-xenial-8"] } }
+      addons: { apt: { packages: ["ninja-build", "clang-8", "libc++-8-dev", "libc++abi-8-dev", "xorg-dev"], sources: ["llvm-toolchain-xenial-8"] } }
 
     - os: linux
       dist: bionic
       group: travis_latest
       env: MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
-      addons: { apt: { packages: ["ninja-build", "g++-9", "libstdc++-9-dev"], sources: { sourceline: "ppa:ubuntu-toolchain-r/test" } } }
+      addons: { apt: { packages: ["ninja-build", "g++-9", "libstdc++-9-dev", "xorg-dev"], sources: { sourceline: "ppa:ubuntu-toolchain-r/test" } } }
 
 install:
   - eval "${MATRIX_EVAL}"
