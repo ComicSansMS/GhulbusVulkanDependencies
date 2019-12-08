@@ -4,3 +4,6 @@
 [submodule "spirv-cross/source"]
 	path = spirv-cross/source
 	url = https://github.com/KhronosGroup/SPIRV-Cross.git
+[submodule "vulkan-memory-allocator/source"]
+	path = vulkan-memory-allocator/source
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git

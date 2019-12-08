@@ -84,3 +84,10 @@ set(spirv-cross_OPTIONS
     -DSPIRV_CROSS_ENABLE_TESTS=OFF
 )
 build_cmake_project(spirv-cross "${spirv-cross_OPTIONS}")
+
+message("Installing Vulkan Memory Allocator...")
+file(COPY
+    ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/source/src/vk_mem_alloc.h
+    ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/source/src/vk_mem_alloc.natvis
+    DESTINATION ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/install
+)

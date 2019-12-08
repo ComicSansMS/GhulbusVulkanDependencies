@@ -43,3 +43,4 @@ after_success:
   - cd ${TRAVIS_BUILD_DIR}
   - ls -l glfw3/install
   - ls -l spirv-cross/install
+  - ls -l vulkan-memory-allocator/install
