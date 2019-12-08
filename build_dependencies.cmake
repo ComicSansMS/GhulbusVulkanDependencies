@@ -1,36 +1,40 @@
+cmake_minimum_required(VERSION 3.13)
+
 cmake_host_system_information(RESULT N_CORES QUERY NUMBER_OF_LOGICAL_CORES)
-message("Using " ${N_CORES} " threads for building.")
+message(STATUS "Using " ${N_CORES} " threads for building.")
 
 if(GENERATOR)
-    message("Using generator " ${GENERATOR})
+    message(STATUS "Using generator " ${GENERATOR})
     set(GENERATOR_OPTION -G ${GENERATOR})
 endif()
 if(ARCHITECTURE)
-    message("Using target architecture " ${ARCHITECTURE})
+    message(STATUS "Using target architecture " ${ARCHITECTURE})
     list(APPEND GENERATOR_OPTION -A ${ARCHITECTURE})
 endif()
 if(TOOLCHAIN)
-    message("Using toolchain " ${TOOLCHAIN})
+    message(STATUS "Using toolchain " ${TOOLCHAIN})
     list(APPEND GENERATOR_OPTION -T ${TOOLCHAIN})
 endif()
 
 if(NOT SKIP_GIT)
     find_package(Git REQUIRED)
-    message("Updating submodules...")
+    message(STATUS "Updating submodules...")
     execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init)
 endif()
 
 function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
-    message("Building ${PROJECT_NAME}...")
+    message(STATUS "Building ${PROJECT_NAME}...")
     
     if(WIN32)
         set(CONFIGURATIONS Debug MinSizeRel Release RelWithDebInfo)
     else()
         set(CONFIGURATIONS Release)
     endif()
-    message("${CMAKE_COMMAND} ${GENERATOR_OPTION} ${CONFIGURE_OPTIONS} -DCMAKE_INSTALL_PREFIX=install -S source -B build")
+    set(${PROJECT_NAME}_build_command COMMAND ${CMAKE_COMMAND} ${GENERATOR_OPTION} ${CONFIGURE_OPTIONS}
+        -DCMAKE_INSTALL_PREFIX=install -S source -B build)
+    message(DEBUG ${${PROJECT_NAME}_build_command})
     execute_process(
-        COMMAND ${CMAKE_COMMAND} ${GENERATOR_OPTION} ${CONFIGURE_OPTIONS} -DCMAKE_INSTALL_PREFIX=install -S source -B build
+        ${${PROJECT_NAME}_build_command}
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
         RESULT_VARIABLE ${PROJECT_NAME}_CONFIGURE_RESULTS
     )
