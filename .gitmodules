@@ -1,0 +1,6 @@
+[submodule "glfw3/source"]
+	path = glfw3/source
+	url = https://github.com/glfw/glfw.git
+[submodule "spirv-cross/source"]
+	path = spirv-cross/source
+	url = https://github.com/KhronosGroup/SPIRV-Cross.git
