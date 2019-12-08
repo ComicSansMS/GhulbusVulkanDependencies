@@ -1,0 +1,33 @@
+language: cpp
+sudo: false
+
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      group: travis_latest
+      env: MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
+      addons: { apt: { packages: ["ninja-build", "clang-8", "libc++-8-dev", "libc++abi-8-dev"], sources: ["llvm-toolchain-xenial-8"] } }
+
+    - os: linux
+      dist: bionic
+      group: travis_latest
+      env: MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
+      addons: { apt: { packages: ["ninja-build", "g++-9", "libstdc++-9-dev"], sources: { sourceline: "ppa:ubuntu-toolchain-r/test" } } }
+
+install:
+  - eval "${MATRIX_EVAL}"
+  - ${CXX} --version
+
+  - ninja --version
+
+  - cmake --version
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - cmake -DGENERATOR=Ninja -P build_dependencies.cmake
+
+after_success:
+  - cd ${TRAVIS_BUILD_DIR}
+  - ls -l glfw3/install
+  - ls -l spirv-cross/install
