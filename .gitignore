@@ -3,3 +3,4 @@ glfw3/install
 spirv-cross/build
 spirv-cross/install
 vulkan-memory-allocator/install
+stb/install

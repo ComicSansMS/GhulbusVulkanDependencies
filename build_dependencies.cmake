@@ -91,3 +91,9 @@ file(COPY
     ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/source/src/vk_mem_alloc.natvis
     DESTINATION ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/install
 )
+
+message("Installing stb...")
+file(COPY
+    ${CMAKE_CURRENT_LIST_DIR}/stb/source/stb_image.h
+    DESTINATION ${CMAKE_CURRENT_LIST_DIR}/stb/install
+)

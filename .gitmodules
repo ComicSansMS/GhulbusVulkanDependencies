@@ -7,3 +7,6 @@
 [submodule "vulkan-memory-allocator/source"]
 	path = vulkan-memory-allocator/source
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "stb/source"]
+	path = stb/source
+	url = https://github.com/nothings/stb.git
