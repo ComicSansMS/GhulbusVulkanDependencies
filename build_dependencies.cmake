@@ -70,6 +70,20 @@ function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
     endforeach()
 endfunction()
 
+set(gbBase_OPTIONS
+    -DGB_BUILD_TESTS=OFF
+    -DGB_GENERATE_DOXYGEN_DOCUMENTATION=OFF
+    -DGB_GENERATE_COVERAGE_INFO=OFF
+)
+build_cmake_project(gbBase "${gbBase_OPTIONS}")
+
+set(gbMath_OPTIONS
+    -DGB_BUILD_TESTS=OFF
+    -DGB_GENERATE_DOXYGEN_DOCUMENTATION=OFF
+    -DGB_GENERATE_COVERAGE_INFO=OFF
+)
+build_cmake_project(gbMath "${gbMath_OPTIONS}")
+
 set(glfw3_OPTIONS -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF)
 build_cmake_project(glfw3 "${glfw3_OPTIONS}")
 

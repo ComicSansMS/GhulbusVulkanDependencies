@@ -10,3 +10,9 @@
 [submodule "stb/source"]
 	path = stb/source
 	url = https://github.com/nothings/stb.git
+[submodule "gbBase/source"]
+	path = gbBase/source
+	url = https://github.com/ComicSansMS/GhulbusBase.git
+[submodule "gbMath/source"]
+	path = gbMath/source
+	url = https://github.com/ComicSansMS/GhulbusMath.git
