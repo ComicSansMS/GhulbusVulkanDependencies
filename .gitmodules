@@ -16,3 +16,6 @@
 [submodule "gbMath/source"]
 	path = gbMath/source
 	url = https://github.com/ComicSansMS/GhulbusMath.git
+[submodule "imgui/source"]
+	path = imgui/source
+	url = https://github.com/ocornut/imgui.git

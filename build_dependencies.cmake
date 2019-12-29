@@ -118,3 +118,25 @@ file(COPY
     ${CMAKE_CURRENT_LIST_DIR}/stb/source/stb_image.h
     DESTINATION ${CMAKE_CURRENT_LIST_DIR}/stb/install
 )
+
+message("Installing dear imgui")
+file(COPY
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imconfig.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui_demo.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui_draw.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui_internal.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui_widgets.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imstb_rectpack.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imstb_textedit.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imstb_truetype.h
+    DESTINATION ${CMAKE_CURRENT_LIST_DIR}/imgui/install
+)
+file(COPY
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/examples/imgui_impl_glfw.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/examples/imgui_impl_glfw.h
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/examples/imgui_impl_vulkan.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/imgui/source/examples/imgui_impl_vulkan.h
+    DESTINATION ${CMAKE_CURRENT_LIST_DIR}/imgui/install/examples
+)

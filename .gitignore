@@ -4,6 +4,8 @@ gbMath/build
 gbMath/install
 glfw3/build
 glfw3/install
+imgui/build
+imgui/install
 spirv-cross/build
 spirv-cross/install
 vulkan-memory-allocator/install
