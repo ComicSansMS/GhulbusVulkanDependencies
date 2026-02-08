@@ -25,7 +25,7 @@ endif()
 function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
     message(STATUS "Building ${PROJECT_NAME}...")
     
-    if(WIN32)
+    if(GENERATOR_IS_MULTI_CONFIG)
         set(CONFIGURATIONS Debug MinSizeRel Release RelWithDebInfo)
     else()
         set(CONFIGURATIONS Release)
