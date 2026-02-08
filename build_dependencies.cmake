@@ -103,6 +103,7 @@ set(spirv-cross_OPTIONS
     -DCMAKE_DEBUG_POSTFIX=_d
     -DCMAKE_MINSIZEREL_POSTFIX=_min
     -DCMAKE_RELWITHDEBINFO_POSTFIX=_rdbg
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 )
 build_cmake_project(spirv-cross "${spirv-cross_OPTIONS}")
 
