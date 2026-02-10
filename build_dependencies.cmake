@@ -30,11 +30,14 @@ function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
 
     if(BUILD_MULTICONFIG)
         set(CONFIGURATIONS Debug MinSizeRel Release RelWithDebInfo)
+        set(BUILD_TYPE_OPTION "")
     else()
         set(CONFIGURATIONS Release)
+        set(BUILD_TYPE_OPTION "-DCMAKE_BUILD_TYPE=${CONFIGURATIONS}")
     endif()
+
     set(${PROJECT_NAME}_build_command COMMAND ${CMAKE_COMMAND} ${GENERATOR_OPTION} ${CONFIGURE_OPTIONS}
-        -DCMAKE_INSTALL_PREFIX=install -S source -B build)
+        ${BUILD_TYPE_OPTION} -DCMAKE_INSTALL_PREFIX=install -S source -B build)
     message(DEBUG ${${PROJECT_NAME}_build_command})
     execute_process(
         ${${PROJECT_NAME}_build_command}
@@ -47,21 +50,24 @@ function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
     endif()
 
     foreach(c ${CONFIGURATIONS})
+        if(BUILD_MULTICONFIG)
+            set(CONFIG_OPTION --config ${c})
+        else()
+            set(CONFIG_OPTION "")
+        endif()
         message(STATUS ">> Building ${PROJECT_NAME} - ${c}...")
         execute_process(
-            COMMAND ${CMAKE_COMMAND} --build build -j ${N_CORES} --config ${c}
+            COMMAND ${CMAKE_COMMAND} --build build -j ${N_CORES} ${CONFIG_OPTION}
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
             RESULTS_VARIABLE ${PROJECT_NAME}_BUILD_RESULTS
         )
         if(NOT ${PROJECT_NAME}_BUILD_RESULTS EQUAL 0)
             message(FATAL_ERROR "Error while building ${PROJECT_NAME}")
         endif()
-    endforeach()
 
-    foreach(c ${CONFIGURATIONS})
         message(STATUS ">> Installing ${PROJECT_NAME} - ${c}...")
         execute_process(
-            COMMAND ${CMAKE_COMMAND} --install build --config ${c}
+            COMMAND ${CMAKE_COMMAND} --install build ${CONFIG_OPTION}
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
             RESULTS_VARIABLE ${PROJECT_NAME}_INSTALL_RESULTS
         )
