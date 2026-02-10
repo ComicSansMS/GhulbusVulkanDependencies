@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 
 cmake_host_system_information(RESULT N_CORES QUERY NUMBER_OF_LOGICAL_CORES)
 message(STATUS "Using " ${N_CORES} " threads for building.")
@@ -15,17 +15,20 @@ if(TOOLSET)
     message(STATUS "Using toolset " ${TOOLSET})
     list(APPEND GENERATOR_OPTION -T ${TOOLSET})
 endif()
+if(BUILD_MULTICONFIG)
+    message(STATUS "Multi Config Build")
+endif()
 
 if(NOT SKIP_GIT)
     find_package(Git REQUIRED)
-    message(STATUS "Updating submodules...")
+    message(STATUS ">> Updating submodules...")
     execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init)
 endif()
 
 function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
-    message(STATUS "Building ${PROJECT_NAME}...")
-    
-    if(GENERATOR_IS_MULTI_CONFIG)
+    message(STATUS ">> Building ${PROJECT_NAME}...")
+
+    if(BUILD_MULTICONFIG)
         set(CONFIGURATIONS Debug MinSizeRel Release RelWithDebInfo)
     else()
         set(CONFIGURATIONS Release)
@@ -43,22 +46,20 @@ function(build_cmake_project PROJECT_NAME CONFIGURE_OPTIONS)
         message(FATAL_ERROR "Error while configuring ${PROJECT_NAME}")
     endif()
 
-    set(${PROJECT_NAME}_build_command "")
     foreach(c ${CONFIGURATIONS})
-        list(APPEND ${PROJECT_NAME}_build_command COMMAND ${CMAKE_COMMAND} --build build -j ${N_CORES} --config ${c})
-    endforeach()
-    execute_process(
-        ${${PROJECT_NAME}_build_command}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
-        RESULTS_VARIABLE ${PROJECT_NAME}_BUILD_RESULTS
-    )
-    foreach(result ${${PROJECT_NAME}_BUILD_RESULTS})
-        if(NOT result EQUAL 0)
+        message(STATUS ">> Building ${PROJECT_NAME} - ${c}...")
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} --build build -j ${N_CORES} --config ${c}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
+            RESULTS_VARIABLE ${PROJECT_NAME}_BUILD_RESULTS
+        )
+        if(NOT ${PROJECT_NAME}_BUILD_RESULTS EQUAL 0)
             message(FATAL_ERROR "Error while building ${PROJECT_NAME}")
         endif()
     endforeach()
 
     foreach(c ${CONFIGURATIONS})
+        message(STATUS ">> Installing ${PROJECT_NAME} - ${c}...")
         execute_process(
             COMMAND ${CMAKE_COMMAND} --install build --config ${c}
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}
@@ -107,20 +108,20 @@ set(spirv-cross_OPTIONS
 )
 build_cmake_project(spirv-cross "${spirv-cross_OPTIONS}")
 
-message("Installing Vulkan Memory Allocator...")
+message(STATUS ">> Installing Vulkan Memory Allocator...")
 file(COPY
     ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/source/include/vk_mem_alloc.h
     ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/source/src/vk_mem_alloc.natvis
     DESTINATION ${CMAKE_CURRENT_LIST_DIR}/vulkan-memory-allocator/install
 )
 
-message("Installing stb...")
+message(STATUS ">> Installing stb...")
 file(COPY
     ${CMAKE_CURRENT_LIST_DIR}/stb/source/stb_image.h
     DESTINATION ${CMAKE_CURRENT_LIST_DIR}/stb/install
 )
 
-message("Installing dear imgui")
+message(STATUS ">> Installing dear imgui")
 file(COPY
     ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imconfig.h
     ${CMAKE_CURRENT_LIST_DIR}/imgui/source/imgui.cpp
